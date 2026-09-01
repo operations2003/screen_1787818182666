@@ -1,91 +1,194 @@
-# Next.js
+# ATS Tasknera — AI-Powered Applicant Tracking System
 
-A modern Next.js 15 application built with TypeScript and Tailwind CSS.
+An end-to-end modern Applicant Tracking System (ATS) tailored for recruiters, hiring managers, and enterprise talent acquisition teams. **ATS Tasknera** provides evidence-based candidate scoring, automated Job Description (JD) requirement extraction, candidate ranking, bias guard, and real-time recruitment analytics.
 
-## 🚀 Features
+---
 
-- **Next.js 15** - Latest version with improved performance and features
-- **React 19** - Latest React version with enhanced capabilities
-- **Tailwind CSS** - Utility-first CSS framework for rapid UI development
+## 🌟 Key Accomplishments & Features Built
 
-## 🛠️ Installation
+### 🎨 1. Frontend Application (`/FrontEnd`)
+Built with **Next.js 15 (App Router)**, **TypeScript**, **React**, and **Tailwind CSS**. Designed with a professional dark theme background (`#060C1A`), high-contrast typography, and intuitive evaluation indicators.
 
-1. Install dependencies:
-  ```bash
-  npm install
-  # or
-  yarn install
-  ```
+- 🏠 **Landing & Product Showcase (`/home`)**:
+  - **Hero Section**: Value proposition with interactive search, evidence-based candidate evaluation preview, and status indicators.
+  - **Bias Guard Section**: Showcase of anonymized screening to eliminate hiring bias.
+  - **Candidate Compare Grid**: Side-by-side candidate comparison matrix.
+  - **Proof & Stats Interstitial**: Metrics on candidate retention, recruiter efficiency, and match precision.
+  - **Integrations & Parsing Showcase**: Interactive resume parser workflow overview.
+  
+- 📊 **Recruiter Dashboard (`/dashboard`)**:
+  - High-level metric overview (Active Jobs, Total Applicants, Shortlisted Candidates, Avg. Time-to-Hire).
+  - Quick action shortcuts for posting jobs, reviewing JD requirements, and searching candidates.
+  - Real-time recruitment activity stream.
 
-2. Start the development server:
-  ```bash
-  npm run dev
-  # or
-  yarn dev
-  ```
-3. Open [http://localhost:4028](http://localhost:4028) with your browser to see the result.
+- 💼 **Job Openings Management (`/jobs`)**:
+  - Comprehensive job directory with search and multi-tag filtering (Status, Client, Location, Work Mode).
+  - Candidate application counts and direct access to candidate pipelines.
 
-## 📁 Project Structure
+- ➕ **Job Creation Workflow (`/jobs/create`)**:
+  - Multi-step job posting interface.
+  - File upload drag-and-drop & raw text paste support for Job Descriptions (JD).
+  - Client detail specification, compensation ranges, work mode (Remote/Hybrid/Onsite), and office locations.
+
+- 📋 **JD Requirement Extraction & Audit (`/jobs/[id]/requirements`)**:
+  - Granular criteria breakdown table extracted from Job Descriptions.
+  - Custom weightage controls (1.0x to 3.0x importance).
+  - Mandatory requirement toggles & evidence requirement flags.
+  - Recruiter manual confirmation controls.
+
+- 👤 **Candidates Directory (`/candidates`)**:
+  - Candidate evaluation cards with match scores (`MatchBadge` & `ScoreCard`).
+  - Evidence breakdown matching candidates against required vs. nice-to-have skills.
+  - Direct resume download links and recruiter decision tags.
+
+- 📈 **Analytics & Auditing (`/analytics`)**:
+  - Recruitment funnel breakdown (Applied → Parsed → Evaluated → Shortlisted → Offered).
+  - Bias audit monitoring and time-to-hire velocity analytics.
+
+- 🧱 **Reusable Component Architecture**:
+  - `MatchBadge`: Displays candidate fit (High / Medium / Low) with evidence scores.
+  - `RequirementTable`: Interactive table component for JD requirement management.
+  - `ScoreCard`: Modular evaluation card displaying match percentages and breakdown.
+  - UI Primitives: `Header`, `Footer`, `AppIcon`, `AppLogo`, `AppImage`.
+
+---
+
+### ⚙️ 2. Backend API & Database Infrastructure (`/backend`)
+Built with **Node.js**, **Express**, **TypeScript**, and **Prisma ORM** targeting **PostgreSQL / Supabase**.
+
+- 🔑 **Authentication System**:
+  - **User Registration & Login**: Endpoint routes (`/api/auth/register`, `/api/auth/login`).
+  - **Security**: Password hashing via `bcryptjs`.
+  - **Authorization**: JSON Web Token (JWT) verification middleware (`authMiddleware`).
+
+- 🗄️ **Database Schema & Models (`prisma/schema.prisma`)**:
+  - **User Model**: Recruiter profile management (`id`, `email`, `password`, `name`, timestamps).
+  - **Job Model**: Job vacancy records (`id`, `client`, `position`, `jd_file_url`, `jd_text`, `location`, `work_mode`, `salary`, `status`, `created_by`, timestamps) with indexed fields for high-speed queries (`created_by`, `status`).
+  - **Requirement Model**: Detailed job requirements (`id`, `job_id`, `requirement`, `category`, `weight`, `is_mandatory`, `evidence_required`, `recruiter_confirmed`, timestamps) linked with cascade delete constraints.
+
+---
+
+## 📁 Repository Structure
 
 ```
-nextjs/
-├── public/             # Static assets
-├── src/
-│   ├── app/            # App router components
-│   │   ├── layout.tsx  # Root layout component
-│   │   └── page.tsx    # Main page component
-│   ├── components/     # Reusable UI components
-│   ├── styles/         # Global styles and Tailwind configuration
-├── next.config.mjs     # Next.js configuration
-├── package.json        # Project dependencies and scripts
-├── postcss.config.js   # PostCSS configuration
-└── tailwind.config.js  # Tailwind CSS configuration
-
+ATS_Tasknera/
+├── FrontEnd/                 # Next.js 15 TypeScript Frontend Application
+│   ├── src/
+│   │   ├── app/              # App router pages (home, jobs, candidates, analytics, dashboard)
+│   │   ├── components/       # UI & candidate evaluation components
+│   │   ├── data/             # Mock data service & evaluation datasets
+│   │   ├── styles/           # Tailwind CSS & custom dark theme styling
+│   │   └── types/            # TypeScript type definitions for ATS domain
+│   ├── public/               # Static assets & brand media
+│   └── next.config.mjs       # Next.js configuration
+│
+├── backend/                  # Node.js + Express + TypeScript API Server
+│   ├── prisma/               # Database schema & Prisma client configuration
+│   └── src/
+│       ├── config/           # Database & environment configuration
+│       ├── controllers/      # Auth & business logic controllers
+│       ├── middleware/       # JWT auth verification middleware
+│       ├── routes/           # REST API endpoints
+│       └── server.ts         # Express app entry point
+│
+├── package.json              # Root scripts for full-stack workspace execution
+└── README.md                 # Project documentation
 ```
 
-## 🧩 Page Editing
+---
 
-You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-## 🎨 Styling
+### Prerequisites
+- **Node.js**: v18.x or higher
+- **npm**: v9.x or higher
+- **PostgreSQL Database** (or Supabase instance)
 
-This project uses Tailwind CSS for styling with the following features:
-- Utility-first approach for rapid development
-- Custom theme configuration
-- Responsive design utilities
-- PostCSS and Autoprefixer integration
+---
 
-## 📦 Available Scripts
+### 1. Installation
 
-- `npm run dev` - Start development server on port 4028
-- `npm run build` - Build the application for production
-- `npm run start` - Start the development server
-- `npm run serve` - Start the production server
-- `npm run lint` - Run ESLint to check code quality
-- `npm run lint:fix` - Fix ESLint issues automatically
-- `npm run format` - Format code with Prettier
+From the project root, install all dependencies for both frontend and backend:
 
-## 📱 Deployment
+```bash
+npm run install:all
+```
 
-Build the application for production:
+Alternatively, install individually:
 
-  ```bash
-  npm run build
-  ```
+```bash
+# Frontend
+cd FrontEnd
+npm install
 
-## 📚 Learn More
+# Backend
+cd ../backend
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial
+### 2. Environment Setup
 
-You can check out the [Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create a `.env` file inside the `backend/` directory:
 
-## 🙏 Acknowledgments
+```env
+PORT=5000
+DATABASE_URL="postgresql://user:password@localhost:5432/ats_tasknera?schema=public"
+DIRECT_URL="postgresql://user:password@localhost:5432/ats_tasknera?schema=public"
+JWT_SECRET="your_jwt_secret_key_here"
+```
 
-- Built with [Rocket.new](https://rocket.new)
-- Powered by Next.js and React
-- Styled with Tailwind CSS
+---
 
-Built with ❤️ on Rocket.new
+### 3. Database Migration (Backend)
+
+Generate Prisma client and run migrations:
+
+```bash
+cd backend
+npx prisma generate
+npx prisma db push
+```
+
+---
+
+### 4. Running the Project
+
+#### Run Frontend & Backend Simultaneously (from Root):
+```bash
+# Terminal 1: Frontend (http://localhost:4028)
+npm run dev:frontend
+
+# Terminal 2: Backend (http://localhost:5000)
+npm run dev:backend
+```
+
+#### Run Individually:
+```bash
+# Frontend
+cd FrontEnd
+npm run dev
+
+# Backend
+cd backend
+npm run dev
+```
+
+---
+
+## 🛠️ Tech Stack Overview
+
+| Domain | Technology |
+| :--- | :--- |
+| **Frontend Framework** | Next.js 15 (App Router), React 19, TypeScript |
+| **Styling & UI** | Tailwind CSS, Lucide Icons, Custom Dark Theme (`#060C1A`) |
+| **Backend Runtime** | Node.js, Express, TypeScript |
+| **Database & ORM** | PostgreSQL, Prisma ORM |
+| **Security & Auth** | JWT (JSON Web Tokens), bcryptjs |
+
+---
+
+## 📄 License
+
+This repository is maintained by the **Tasknera Engineering Team**. All rights reserved.
